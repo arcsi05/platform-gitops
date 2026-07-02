@@ -1,0 +1,12 @@
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: ManagedResourceActivationPolicy
+metadata:
+  name: gcp-platform-activations
+spec:
+  activate:
+    # From provider-gcp-storage
+    - buckets.storage.gcp.upbound.io
+    - bucketiammembers.storage.gcp.upbound.io
+    # From provider-gcp-cloudplatform
+    - serviceaccounts.cloudplatform.gcp.upbound.io
+    - serviceaccountkeys.cloudplatform.gcp.upbound.io
