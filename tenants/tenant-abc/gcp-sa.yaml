@@ -40,3 +40,16 @@ spec:
     member: serviceAccount:tenant-abc-sa@kubernetes-object-store.iam.gserviceaccount.com
   providerConfigRef:
     name: default
+---
+# 3. Grant the SA objectViewer on the bucket only
+apiVersion: cloudplatform.gcp.upbound.io/v1beta1
+kind: ProjectIAMMember
+metadata:
+  name: tenant-abc-sa-artifact-registry-access
+spec:
+  forProvider:
+    project: kubernetes-object-store
+    role: roles/artifactregistry.reader
+    member: serviceAccount:tenant-abc-sa@kubernetes-object-store.iam.gserviceaccount.com
+  providerConfigRef:
+    name: default
