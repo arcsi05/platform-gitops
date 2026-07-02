@@ -1,0 +1,35 @@
+# Deny all ingress from other namespaces
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-cross-namespace-ingress
+  namespace: tenant-abc
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector: {}   # only pods within tenant-abc namespace
+
+---
+# Deny all egress except GCS API (443) and DNS (53)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: restrict-egress
+  namespace: tenant-abc
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector: {}   # intra-namespace traffic (pod to pod)
+    - ports:
+        - port: 443         # HTTPS — GCS API calls
+          protocol: TCP
+        - port: 53          # DNS
+          protocol: UDP
+        - port: 53
+          protocol: TCP

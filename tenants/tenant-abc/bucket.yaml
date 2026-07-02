@@ -1,0 +1,14 @@
+apiVersion: storage.gcp.upbound.io/v1beta1
+kind: Bucket
+metadata:
+  name: tenant-abc-bucket-testdemo4234
+  namespace: tenant-abc
+spec:
+  forProvider:
+    location: EU
+    storageClass: STANDARD
+    uniformBucketLevelAccess: true
+    versioning:
+      - enabled: false
+  providerConfigRef:
+    name: default
