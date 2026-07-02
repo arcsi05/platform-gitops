@@ -10,3 +10,4 @@ spec:
     # From provider-gcp-cloudplatform
     - serviceaccounts.cloudplatform.gcp.upbound.io
     - serviceaccountkeys.cloudplatform.gcp.upbound.io
+    - projectiammembers.cloudplatform.gcp.upbound.io
