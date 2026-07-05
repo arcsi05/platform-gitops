@@ -1,7 +1,7 @@
 apiVersion: cloudplatform.gcp.upbound.io/v1beta1
 kind: ServiceAccount
 metadata:
-  name: {{ .Values.tenantName }}-sa
+  name: {{ .Values.tenantName }}-app-sa
 spec:
   forProvider:
     displayName: "{{ .Values.tenantName }} bucket access SA"
@@ -16,7 +16,7 @@ metadata:
 spec:
   forProvider:
     serviceAccountIdRef:
-      name: {{ .Values.tenantName }}-sa
+      name: {{ .Values.tenantName }}-app-sa
   writeConnectionSecretToRef:
     name: {{ .Values.tenantName }}-gcp-sa
     namespace: {{ .Values.tenantName }}
