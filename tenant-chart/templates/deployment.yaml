@@ -27,14 +27,16 @@ spec:
           ports:
             - containerPort: 8000
           env:
+            - name: GCP_SA_EMAIL
+              value: {{ .Values.gcpServiceAccountEmail }}
+            - name: GCP_PROJECT
+              value: {{ .Values.gcpProject }}
             - name: BUCKET_NAME
-              value: {{ .Values.bucketName | quote }}
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/run/gcp/creds.json
-          volumeMounts:
-            - name: gcp-sa
-              mountPath: /var/run/gcp
-              readOnly: true
+              value: {{ .Values.bucketName }}
+            - name: GCP_TOKEN_URI
+              value: "https://oauth2.googleapis.com/token"
+            - name: GCP_PRIVATE_KEY_PATH
+              value: "/var/run/gcp/private_key.pem"
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu | quote }}

@@ -1,5 +1,5 @@
 tenantName: ""
-gcpProject: ""
+gcpProject: "kubernetes-object-store"
 gcpServiceAccountEmail: ""
 bucketName: ""
 bucketLocation: EU
@@ -29,3 +29,4 @@ quota:
     cpu: "1"
     memory: "1Gi"
   pods: "10"
+

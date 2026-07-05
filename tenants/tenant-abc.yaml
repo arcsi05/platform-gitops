@@ -1,5 +1,4 @@
 tenantName: tenant-abc
-gcpProject: kubernetes-object-store
 gcpServiceAccountEmail: tenant-abc-sa@kubernetes-object-store.iam.gserviceaccount.com
 bucketName: tenant-abc-bucket-testdemo4234
 bucketLocation: EU
