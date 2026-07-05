@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bucket-api
+  namespace: {{ .Values.tenantName }}
+  labels:
+    app: bucket-api
+    tenant: {{ .Values.tenantName }}
+spec:
+  selector:
+    app: bucket-api
+    tenant: {{ .Values.tenantName }}
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+      protocol: TCP
+  type: {{ .Values.service.type }}

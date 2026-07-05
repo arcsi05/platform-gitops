@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-cross-namespace
+  namespace: {{ .Values.tenantName }}
+  labels:
+    tenant: {{ .Values.tenantName }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector: {}          # only pods within same namespace
+  egress:
+    - to:
+        - podSelector: {}          # only pods within same namespace
+    - ports:
+        - port: 443                # HTTPS to GCS / GAR APIs
+          protocol: TCP
+        - port: 53                 # DNS
+          protocol: UDP

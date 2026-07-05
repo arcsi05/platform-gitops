@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bucket-api
+  namespace: {{ .Values.tenantName }}
+  labels:
+    app: bucket-api
+    tenant: {{ .Values.tenantName }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: bucket-api
+      tenant: {{ .Values.tenantName }}
+  template:
+    metadata:
+      labels:
+        app: bucket-api
+        tenant: {{ .Values.tenantName }}
+    spec:
+      serviceAccountName: {{ .Values.tenantName }}-app   # ← uses our SA with imagePullSecrets
+      automountServiceAccountToken: false
+      containers:
+        - name: api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: BUCKET_NAME
+              value: {{ .Values.bucketName | quote }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/run/gcp/creds.json
+          volumeMounts:
+            - name: gcp-sa
+              mountPath: /var/run/gcp
+              readOnly: true
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu | quote }}
+              memory: {{ .Values.resources.requests.memory | quote }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu | quote }}
+              memory: {{ .Values.resources.limits.memory | quote }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+      volumes:
+        - name: gcp-sa
+          secret:
+            secretName: {{ .Values.tenantName }}-gcp-sa
+            items:
+              - key: attribute.private_key
+                path: creds.json

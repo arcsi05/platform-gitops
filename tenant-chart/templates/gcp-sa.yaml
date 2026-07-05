@@ -1,0 +1,51 @@
+apiVersion: cloudplatform.gcp.upbound.io/v1beta1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.tenantName }}-sa
+spec:
+  forProvider:
+    displayName: "{{ .Values.tenantName }} bucket access SA"
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: cloudplatform.gcp.upbound.io/v1beta1
+kind: ServiceAccountKey
+metadata:
+  name: {{ .Values.tenantName }}-sa-key
+spec:
+  forProvider:
+    serviceAccountIdRef:
+      name: {{ .Values.tenantName }}-sa
+  writeConnectionSecretToRef:
+    name: {{ .Values.tenantName }}-gcp-sa
+    namespace: {{ .Values.tenantName }}
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: storage.gcp.upbound.io/v1beta1
+kind: BucketIAMMember
+metadata:
+  name: {{ .Values.tenantName }}-sa-bucket-access
+spec:
+  forProvider:
+    bucketRef:
+      name: {{ .Values.bucketName }}
+    role: roles/storage.objectViewer
+    member: serviceAccount:{{ .Values.gcpServiceAccountEmail }}
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: cloudplatform.gcp.upbound.io/v1beta1
+kind: ProjectIAMMember
+metadata:
+  name: {{ .Values.tenantName }}-sa-gar-reader
+spec:
+  forProvider:
+    project: {{ .Values.gcpProject }}
+    role: roles/artifactregistry.reader
+    member: serviceAccount:{{ .Values.gcpServiceAccountEmail }}
+  providerConfigRef:
+    name: default

@@ -4,24 +4,37 @@ metadata:
   name: tenants
   namespace: argocd
 spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
         repoURL: https://github.com/arcsi05/platform-gitops.git
         revision: HEAD
-        directories:
-          - path: tenants/*
+        files:
+          - path: "tenants/*.yaml"
   template:
     metadata:
-      name: "{{path.basename}}"
+      name: "{{ .tenantName }}"
     spec:
       project: default
       source:
         repoURL: https://github.com/arcsi05/platform-gitops.git
         targetRevision: HEAD
-        path: "{{path}}"
+        path: tenant-chart
+        helm:
+          releaseName: "{{ .tenantName }}"
+          values: |
+            tenantName: {{ .tenantName }}
+            gcpProject: {{ .gcpProject }}
+            gcpServiceAccountEmail: {{ .gcpServiceAccountEmail }}
+            bucketName: {{ .bucketName }}
+            bucketLocation: {{ .bucketLocation }}
+            image:
+              repository: {{ .image.repository }}
+              tag: {{ .image.tag }}
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{path.basename}}"
+        namespace: "{{ .tenantName }}"
       syncPolicy:
         automated:
           prune: true

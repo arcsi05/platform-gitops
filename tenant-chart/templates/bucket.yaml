@@ -1,11 +1,10 @@
 apiVersion: storage.gcp.upbound.io/v1beta1
 kind: Bucket
 metadata:
-  name: tenant-abc-bucket-testdemo4234
-  namespace: tenant-abc
+  name: {{ .Values.bucketName }}
 spec:
   forProvider:
-    location: EU
+    location: {{ .Values.bucketLocation }}
     storageClass: STANDARD
     uniformBucketLevelAccess: true
     versioning:

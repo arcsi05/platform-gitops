@@ -1,0 +1,9 @@
+tenantName: tenant-abc
+gcpProject: kubernetes-object-store
+gcpServiceAccountEmail: tenant-abc-sa@kubernetes-object-store.iam.gserviceaccount.com
+bucketName: tenant-abc-bucket-testdemo4234
+bucketLocation: EU
+image:
+  repository: europe-west1-docker.pkg.dev/kubernetes-object-store/demo-frontend/bucket-api
+  tag: latest
+description: "Tenant ABC - demo tenant"
