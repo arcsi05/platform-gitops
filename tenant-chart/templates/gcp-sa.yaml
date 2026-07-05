@@ -50,6 +50,22 @@ spec:
 
 ---
 apiVersion: cloudplatform.gcp.upbound.io/v1beta1
+kind: ServiceAccountKey
+metadata:
+  name: {{ .Values.tenantName }}-gar-sa-key
+spec:
+  forProvider:
+    serviceAccountIdRef:
+      name: {{ .Values.tenantName }}-gar-sa
+  writeConnectionSecretToRef:
+    name: {{ .Values.tenantName }}-gar-sa
+    namespace: {{ .Values.tenantName }}
+  providerConfigRef:
+    name: default
+
+
+---
+apiVersion: cloudplatform.gcp.upbound.io/v1beta1
 kind: ProjectIAMMember
 metadata:
   name: {{ .Values.tenantName }}-sa-gar-reader
