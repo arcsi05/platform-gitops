@@ -50,9 +50,13 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
       volumes:
-        - name: gcp-sa
+        - name: gcp-key
           secret:
             secretName: {{ .Values.tenantName }}-gcp-sa
             items:
-              - key: attribute.private_key
-                path: creds.json
+              - key: private_key
+                path: private_key.pem
+      volumeMounts:
+        - name: gcp-key
+          mountPath: /var/run/gcp
+          readOnly: true
