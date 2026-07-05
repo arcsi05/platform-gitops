@@ -33,7 +33,18 @@ spec:
     bucketRef:
       name: {{ .Values.bucketName }}
     role: roles/storage.objectUser
-    member: serviceAccount:{{ .Values.gcpServiceAccountEmail }}
+    member: serviceAccount:{{ .Values.tenantName }}-app-sa@{{ .Values.gcpProject }}.iam.gserviceaccount.com
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: cloudplatform.gcp.upbound.io/v1beta1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.tenantName }}-gar-sa
+spec:
+  forProvider:
+    displayName: "{{ .Values.tenantName }} GAR access SA"
   providerConfigRef:
     name: default
 
@@ -46,6 +57,6 @@ spec:
   forProvider:
     project: {{ .Values.gcpProject }}
     role: roles/artifactregistry.reader
-    member: serviceAccount:{{ .Values.gcpServiceAccountEmail }}
+    member: serviceAccount:{{ .Values.tenantName }}-gar-sa@{{ .Values.gcpProject }}.iam.gserviceaccount.com
   providerConfigRef:
     name: default

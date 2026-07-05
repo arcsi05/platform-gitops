@@ -26,7 +26,6 @@ spec:
           values: |
             tenantName: {{ .tenantName }}
             gcpProject: {{ .gcpProject }}
-            gcpServiceAccountEmail: {{ .gcpServiceAccountEmail }}
             bucketName: {{ .bucketName }}
             bucketLocation: {{ .bucketLocation }}
             image:

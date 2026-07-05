@@ -1,6 +1,5 @@
 tenantName: ""
 gcpProject: "kubernetes-object-store"
-gcpServiceAccountEmail: ""
 bucketName: ""
 bucketLocation: EU
 
