@@ -27,12 +27,26 @@ spec:
 apiVersion: storage.gcp.upbound.io/v1beta1
 kind: BucketIAMMember
 metadata:
-  name: {{ .Values.tenantName }}-sa-bucket-access
+  name: {{ .Values.tenantName }}-sa-bucket-access-read
 spec:
   forProvider:
     bucketRef:
       name: {{ .Values.bucketName }}
     role: roles/storage.objectViewer
+    member: serviceAccount:{{ .Values.gcpServiceAccountEmail }}
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: storage.gcp.upbound.io/v1beta1
+kind: BucketIAMMember
+metadata:
+  name: {{ .Values.tenantName }}-sa-bucket-access-write
+spec:
+  forProvider:
+    bucketRef:
+      name: {{ .Values.bucketName }}
+    role: roles/storage.objectCreator
     member: serviceAccount:{{ .Values.gcpServiceAccountEmail }}
   providerConfigRef:
     name: default
