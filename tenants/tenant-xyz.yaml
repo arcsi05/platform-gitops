@@ -1,8 +1,0 @@
-tenantName: tenant-xyz
-bucketName: tenant-xyz-bucket-testdemo456
-gcpProject: kubernetes-object-store
-bucketLocation: EU
-image:
-  repository: europe-west1-docker.pkg.dev/kubernetes-object-store/demo-frontend/bucket-api
-  tag: latest
-description: "Tenant XYZ - demo tenant"
