@@ -3,6 +3,7 @@ kind: Bucket
 metadata:
   name: {{ .Values.bucketName }}
 spec:
+  deletionPolicy: Delete
   forProvider:
     location: {{ .Values.bucketLocation }}
     storageClass: STANDARD
