@@ -20,6 +20,48 @@ Adding `tenants/<name>.yaml` and merging it produces, automatically:
 
 ## Architecture
 
+```mermaid
+flowchart LR
+
+    dev["👤 Developer"]
+
+    subgraph git["GitHub"]
+        tenants["tenants/*.yaml"]
+    end
+
+    subgraph cluster["k3s Cluster"]
+        appset["Argo CD<br/>ApplicationSet"]
+        helm["tenant-chart<br/>(Helm)"]
+        xp["Crossplane"]
+
+        subgraph ns["Tenant Namespace"]
+            app["FastAPI Pod"]
+            rbac["RBAC / NetPol / Quota"]
+        end
+    end
+
+    subgraph gcp["Google Cloud"]
+        bucket["GCS Bucket"]
+        gar["Artifact Registry"]
+        iam["Service Accounts<br/>+ IAM"]
+    end
+
+    dev -- "PR + merge" --> tenants
+    tenants --> appset
+    appset -- "renders" --> helm
+    helm --> ns
+    helm --> xp
+    xp --> bucket
+    xp --> iam
+    app -- "reads/writes" --> bucket
+    app -. "pulls image" .-> gar
+
+    style git fill:#f5f0ff,stroke:#7c3aed,color:#000
+    style cluster fill:#eef6ff,stroke:#2563eb,color:#000
+    style gcp fill:#fff7ed,stroke:#ea580c,color:#000
+    style ns fill:#dbeafe,stroke:#3b82f6,color:#000
+```
+
 ```
 Developer ──PR──► Git (this repo) ──► Argo CD ──► k3s cluster
                                           │
