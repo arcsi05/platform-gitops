@@ -62,19 +62,6 @@ flowchart LR
     style ns fill:#dbeafe,stroke:#3b82f6,color:#000
 ```
 
-```
-Developer ──PR──► Git (this repo) ──► Argo CD ──► k3s cluster
-                                          │
-                   ┌──────────────────────┼──────────────────────┐
-                   ▼                       ▼                       ▼
-             ApplicationSet          Crossplane              tenant namespace
-          (1 file = 1 Application)  (GCP provider)          - FastAPI Deployment
-                   │                     │                  - RBAC / NetworkPolicy
-                   │                     ▼                  - ResourceQuota
-                   │ 
-                   └──renders──► tenant-chart (Helm) ──► GCS bucket + IAM + SA keys
-```
-
 **Flow:** the Argo CD `ApplicationSet` uses a **git file generator** to watch `tenants/*.yaml`. Each file becomes one Argo CD `Application`, which renders the shared `tenant-chart` Helm chart with that tenant's values. The chart emits both Kubernetes objects (Deployment, RBAC, etc.) and Crossplane managed resources (Bucket, ServiceAccount, IAM). Crossplane reconciles those against GCP and writes the generated SA key back into the tenant namespace as a Secret, which the app mounts.
 
 ---
