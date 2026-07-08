@@ -1,0 +1,8 @@
+tenantName: tenant-abc
+bucketName: tenant-abc-bucket-testdemo123
+gcpProject: kubernetes-object-store
+bucketLocation: EU
+image:
+  repository: europe-west1-docker.pkg.dev/kubernetes-object-store/demo-frontend/bucket-api
+  tag: latest
+description: "Tenant ABC - demo tenant"
